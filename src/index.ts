@@ -75,17 +75,17 @@ function appendFile (fontName:string, fdPath: string, glyphList:string[]) {
   for (let i:number = 0; i < glyphList.length; i++) {
     const glyph = glyphList[i].split(',')
     if (i === glyphList.length - 1) {
-      FontData = `    '${glyph[0]} (${fontName})' => $set . '_${glyph[1]}'\n);`
+      FontData += `    '${glyph[0]} (${fontName})' => $set . '_${glyph[1]}'\n);`
     } else {
-      FontData = `    '${glyph[0]} (${fontName})' => $set . '_${glyph[1]}',\n`
+      FontData += `    '${glyph[0]} (${fontName})' => $set . '_${glyph[1]}',\n`
     }
-
-    fs.appendFile(fontFile, FontData, (err:string) => {
-      if (err) {
-        throw err
-      }
-    })
   }
+
+  fs.appendFile(fontFile, FontData, (err:string) => {
+    if (err) {
+      throw err
+    }
+  })
 
   console.log(`${fontFile} is created`)
 }
