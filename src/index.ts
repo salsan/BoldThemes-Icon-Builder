@@ -56,8 +56,6 @@ function getSelectors (selectors: CssInterface): RuleInterface[] {
 }
 
 function createFile (fdName:string, fdPath: string) {
-  // const fontFile = `${fdPath}/${fdName}.php`
-
   const fontFile = path.join(fdPath, `${fdName}.php`)
   const headerPhp = `<?php\n
 $set = strtolower( basename(__FILE__, '.php') );\n
@@ -71,7 +69,6 @@ $$set = array(\n`
 }
 
 function appendFile (fontName:string, fdPath: string, glyphList:string[]) {
-  // const fontFile:string = `${fontName}.php`
   const fontFile: string = path.join(fdPath, `${fontName}.php`)
   let FontData:string = ''
 
