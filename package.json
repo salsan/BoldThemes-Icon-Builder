@@ -1,6 +1,6 @@
 {
   "name": "boldthemes-icon-builder",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Create from CSS Gliphy Icons a PHP file for load icon in WordPress BoldThemes Themes",
   "main": "./dist/index.js",
   "scripts": {

@@ -1,5 +1,6 @@
 const fs = require('fs')
 const css = require('css')
+const path = require('path')
 
 interface DeclarationsInterface {
     type: 'declaration';
@@ -32,12 +33,13 @@ fs.readFile(source, 'utf8', function (err:string, data:string) {
   const obj: CssInterface = getCss(data)
   const rules: RuleInterface[] = getSelectors(obj)
   const fontName:string = getFontName(obj)
+  const fontPath:string = path.dirname(source)
 
-  createFile(fontName)
+  createFile(fontName, fontPath)
 
   const glyphList:string[] = getGlyphList(rules)
 
-  appendFile(fontName, glyphList)
+  appendFile(fontName, fontPath, glyphList)
 })
 
 function getCss (data:string): CssInterface {
@@ -53,8 +55,10 @@ function getSelectors (selectors: CssInterface): RuleInterface[] {
   return (selectors.stylesheet.rules)
 }
 
-function createFile (fdName:string) {
-  const fontFile = `${fdName}.php`
+function createFile (fdName:string, fdPath: string) {
+  // const fontFile = `${fdPath}/${fdName}.php`
+
+  const fontFile = path.join(fdPath, `${fdName}.php`)
   const headerPhp = `<?php\n
 $set = strtolower( basename(__FILE__, '.php') );\n
 $$set = array(\n`
@@ -66,8 +70,9 @@ $$set = array(\n`
   })
 }
 
-function appendFile (fontName:string, glyphList:string[]) {
-  const fontFile:string = `${fontName}.php`
+function appendFile (fontName:string, fdPath: string, glyphList:string[]) {
+  // const fontFile:string = `${fontName}.php`
+  const fontFile: string = path.join(fdPath, `${fontName}.php`)
   let FontData:string = ''
 
   for (let i:number = 0; i < glyphList.length; i++) {
