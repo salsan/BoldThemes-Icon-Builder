@@ -1,8 +1,8 @@
 {
   "name": "boldthemes-icon-builder",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Create from CSS Gliphy Icons a PHP file for load icon in WordPress BoldThemes Themes",
-  "main": "/src/index.ts",
+  "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc --build",
@@ -19,6 +19,9 @@
     "BoldThemes",
     "typescript"
   ],
+  "bin": {
+    "boldthemes-icon-builder": "./bin/boldthemes-icon-builder"
+  },
   "devDependencies": {
     "@types/node": "^17.0.31",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
