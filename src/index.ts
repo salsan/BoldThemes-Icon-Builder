@@ -37,7 +37,7 @@ fs.readFile(source, 'utf8', function (err:string, data:string) {
 
   createFile(fontName, fontPath)
 
-  const glyphList:string[] = getGlyphList(rules)
+  const glyphList:string = getGlyphs(fontName, rules)
 
   appendFile(fontName, fontPath, glyphList)
 })
@@ -68,20 +68,10 @@ $$set = array(\n`
   })
 }
 
-function appendFile (fontName:string, fdPath: string, glyphList:string[]) {
+function appendFile (fontName:string, fdPath: string, glyphList:string) {
   const fontFile: string = path.join(fdPath, `${fontName}.php`)
-  let FontData:string = ''
 
-  for (let i:number = 0; i < glyphList.length; i++) {
-    const glyph = glyphList[i].split(',')
-    if (i === glyphList.length - 1) {
-      FontData += `    '${glyph[0]} (${fontName})' => $set . '_${glyph[1]}'\n);`
-    } else {
-      FontData += `    '${glyph[0]} (${fontName})' => $set . '_${glyph[1]}',\n`
-    }
-  }
-
-  fs.appendFile(fontFile, FontData, (err:string) => {
+  fs.appendFile(fontFile, glyphList, (err:string) => {
     if (err) {
       throw err
     }
@@ -99,17 +89,19 @@ function getFontName (css:CssInterface):string {
   return ''
 }
 
-function getGlyphList (items: RuleInterface[]):string[] {
-  const glyphList:string[] = []
+function getGlyphs (fontName:string, items: RuleInterface[]):string {
+  let fontData:string = ''
 
   for (let i:number = 0; i < items.length; i++) {
     if (items[i].type === 'rule' && (items[i].selectors.length === 1)) {
       const glyphName: RegExpMatchArray | null = items[i].selectors[0].match(/(-?[_a-zA-Z]+[_a-zA-Z0-9-]*):before/)
       const glyphValue: RegExpMatchArray | null = items[i].declarations[0].value.match(/^"\\(\w{4})"/)
 
-      if ((glyphName !== null) && (glyphValue !== null)) { glyphList.push(`${glyphName[1]},${glyphValue[1]}`) }
+      if ((glyphName !== null) && (glyphValue !== null)) {
+        fontData += `    '${glyphName[1]} (${fontName})' => $set . '_${glyphValue[1]}',\n`
+      }
     }
   }
 
-  return glyphList
+  return fontData.replace(/,\n$/, '\n);')
 }
