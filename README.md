@@ -18,7 +18,7 @@ npm i -g boldthemes-icon-builder
 # Usage
 
 ```bash
-node boldthemes-icon-builder your.css
+boldthemes-icon-builder your.css
 ```
 
 # Features
