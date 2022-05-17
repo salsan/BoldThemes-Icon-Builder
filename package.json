@@ -10,6 +10,14 @@
     "clean": "tsc --build --clean"
   },
   "author": "Salvatore Santagati",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/salsan/BoldThemes-Icon-Builder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/salsan/BoldThemes-Icon-Builder/issues"
+  },
+  "homepage": "https://github.com/salsan/BoldThemes-Icon-Builder#readme",
   "license": "MIT",
   "dependencies": {
     "css": "^3.0.0"
