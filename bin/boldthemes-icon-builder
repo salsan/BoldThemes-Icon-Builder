@@ -1,3 +1,5 @@
 #!/usr/bin/env node
 
-require('../dist/index.js')
+const iconBuilder = require('../dist/index.js')
+
+iconBuilder(process.argv.slice(2)[0])

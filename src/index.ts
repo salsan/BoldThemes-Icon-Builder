@@ -1,25 +1,28 @@
 import { CssInterface } from './lib/CssInterface'
 const fs = require('fs')
 const path = require('path')
+const isCss = require('@salsan/iscss')
 const stylesheet = require('./stylesheet')
 
-const source: string = process.argv.slice(2)[0]
+// const source: string = process.argv.slice(2)[0]
 
-fs.readFile(source, 'utf8', function (err:string, data:string) {
-  if (err) {
-    return console.log(err)
-  }
+export = function init (source: string) {
+  fs.readFile(source, 'utf8', function (err:string, data:string) {
+    if (err) {
+      return console.log(err)
+    }
 
-  const obj: CssInterface = stylesheet.getData(data)
-  const fontName:string = stylesheet.getFontName(obj)
-  const fontPath:string = path.dirname(source)
+    if (isCss(data)) {
+      const obj: CssInterface = stylesheet.getData(data)
+      const fontName:string = stylesheet.getFontName(obj)
+      const glyphList:string = stylesheet.getGlyphs(fontName, obj)
 
-  createFile(fontName, fontPath)
-
-  const glyphList:string = stylesheet.getGlyphs(fontName, obj)
-
-  appendFile(fontName, fontPath, glyphList)
-})
+      const fontPath:string = path.dirname(source)
+      createFile(fontName, fontPath)
+      appendFile(fontName, fontPath, glyphList)
+    } else console.log(`${source} is not valid CSS`)
+  })
+}
 
 function createFile (fdName:string, fdPath: string) {
   const fontFile = path.join(fdPath, `${fdName}.php`)
